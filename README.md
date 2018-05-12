@@ -1,1 +1,1 @@
-# Ansible GitHub Users Module
+# GitHub User Manager
