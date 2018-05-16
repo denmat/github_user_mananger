@@ -3,6 +3,7 @@ from cement.core.controller import CementBaseController, expose
 from lib.github_users import GithubUsers 
 
 VERSION = '0.0.1'
+STARTING_UID_NUMBER=3333
 
 BANNER = """
 github_users_manager.py %s
@@ -19,6 +20,8 @@ class GitHubBaseController(CementBaseController):
               dict(action='store', help='Github organisation name') ),
             ( ['-t', '--team'],
               dict(action='store', help='Github team that users belong to') ),
+            ( ['--output'],
+              dict(action='store', help="Output format, 'tab' (default) or 'json'") ),
             ( ['-s', '--sudo'],
               dict(action='store_true', help='Add user to sudo (default: false)') )
             ]
