@@ -1,11 +1,11 @@
 from cement.core.foundation import CementApp
 from cement.core.controller import CementBaseController, expose
-from lib.GithubUsers import GithubUsers 
+from lib.github_users import GithubUsers 
 
 VERSION = '0.0.1'
 
 BANNER = """
-github_users.py %s
+github_users_manager.py %s
 
 This manages Github users on local Linux systems - using an organisation's team lists
 """ % VERSION
@@ -46,7 +46,7 @@ class GitHubBaseController(CementBaseController):
     
 class GitHubUserCli(CementApp):
     class Meta:
-        label = 'github_user'
+        label = 'github_user_manager'
         base_controller = 'base'
         extensions = ['tabulate']
         output_handler = 'tabulate'
