@@ -1,6 +1,6 @@
 import os
 from github import Github
-from lib.UserManagement import UserManagement
+from lib.user_management import UserManagement
 
 class GithubUsers():
 	def __init__(self, org, team):
