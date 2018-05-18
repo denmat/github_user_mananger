@@ -39,8 +39,8 @@ class UserManagement():
             raise("Failed to remove %s from system" % login)
 
     def get_ids(self, uid):
-        return (id for id in pwd.getpwall() if (id.pw_uid > uid))
+        return (id for id in pwd.getpwall() if (id.pw_uid >= uid))
 
     def list_local_uids(self, starting_uid):
         for id in self.get_ids(starting_uid):
-            return id
+            return id.pw_uid
