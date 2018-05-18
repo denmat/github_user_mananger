@@ -3,6 +3,7 @@ import mock
 import pwd
 import grp
 import subprocess
+from collections import namedtuple
 from lib.user_management import UserManagement
 
 @mock.patch('pwd.getpwnam')
@@ -48,3 +49,25 @@ def test_purge_user(mock_subprocess, login):
     um = UserManagement()
     um.purge_user(login)
     subprocess.run.assert_called_with(['userdel', '-r', 'george'], check=True)
+
+@pytest.fixture
+def create_pwd():
+    data = []
+    struct_passwd = namedtuple('struct_passwd', 'pw_name pw_passwd pw_uid pw_gid pw_gecos pw_dir pw_shell')
+    data.append(struct_passwd(pw_name='root', pw_passwd='x', pw_uid=0, pw_gid=0, pw_gecos='root', pw_dir='/root', pw_shell='/bin/bash'))
+    data.append(struct_passwd(pw_name='daemon', pw_passwd='x', pw_uid=1, pw_gid=1, pw_gecos='daemon', pw_dir='/usr/sbin', pw_shell='/usr/sbin/nologin'))
+    data.append(struct_passwd(pw_name='soupnazi', pw_passwd='x', pw_uid=1000, pw_gid=1000, pw_gecos='soupnazi', pw_dir='/home/soup', pw_shell='/bin/bash'))
+    data.append(struct_passwd(pw_name='elaine', pw_passwd='x', pw_uid=3001, pw_gid=3000, pw_gecos='elaine', pw_dir='/home/elaine', pw_shell='/bin/bash'))
+    data.append(struct_passwd(pw_name='george', pw_passwd='x', pw_uid=3021, pw_gid=3000, pw_gecos='george', pw_dir='/home/george', pw_shell='/bin/bash'))
+    return data
+@mock.patch('pwd.getpwall')
+@pytest.mark.parametrize("uid", [ (999) ])
+def test_get_ids(our_pwd, uid):
+    our_pwd.return_value = create_pwd()
+    um = UserManagement()
+    for id in um.get_ids(uid):
+        assert id.pw_uid >= 1000
+
+    def list_local_uids(self, starting_uid):
+        for id in self.get_ids(starting_uid):
+            return id
