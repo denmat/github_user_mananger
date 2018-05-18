@@ -44,3 +44,7 @@ class UserManagement():
     def list_local_uids(self, starting_uid):
         for id in self.get_ids(starting_uid):
             return id.pw_uid
+
+    def list_local_logins(self, starting_uid):
+        for id in self.get_ids(starting_uid):
+            return id.pw_name

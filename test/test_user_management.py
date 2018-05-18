@@ -87,3 +87,13 @@ def test_list_uids(our_pwd, uid):
     for id in um.get_ids(uid):
         ids.append(id.pw_uid)
     assert len(ids) == 3
+
+@mock.patch('pwd.getpwall')
+@pytest.mark.parametrize("uid", [ (1000) ])
+def test_list_logins(our_pwd, uid):
+    our_pwd.return_value = create_pwd()
+    um = UserManagement()
+    ids = []
+    for id in um.get_ids(uid):
+        ids.append(id.pw_name)
+    assert ids == [ 'soupnazi', 'elaine', 'george' ]
