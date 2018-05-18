@@ -68,6 +68,22 @@ def test_get_ids(our_pwd, uid):
     for id in um.get_ids(uid):
         assert id.pw_uid >= 1000
 
-    def list_local_uids(self, starting_uid):
-        for id in self.get_ids(starting_uid):
-            return id
+@mock.patch('pwd.getpwall')
+@pytest.mark.parametrize("uid", [ (0) ])
+def test_list_uids(our_pwd, uid):
+    our_pwd.return_value = create_pwd()
+    um = UserManagement()
+    ids = []
+    for id in um.get_ids(uid):
+        ids.append(id.pw_uid)
+    assert len(ids) == 5
+
+@mock.patch('pwd.getpwall')
+@pytest.mark.parametrize("uid", [ (1000) ])
+def test_list_uids(our_pwd, uid):
+    our_pwd.return_value = create_pwd()
+    um = UserManagement()
+    ids = []
+    for id in um.get_ids(uid):
+        ids.append(id.pw_uid)
+    assert len(ids) == 3
