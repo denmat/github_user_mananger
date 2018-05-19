@@ -10,19 +10,21 @@ github_users_manager.py %s
 This manages Github users on local Linux systems - using an organisation's team lists
 """ % Configuration.version()
 
+
 class GitHubBaseController(CementBaseController):
+
     class Meta:
         label = 'base'
         description = "Fetches Github user from an Github org team, and creates user accounts and public ssh keys"
         arguments = [
-            ( ['-o', '--org'],
-              dict(action='store', help='Github organisation name') ),
-            ( ['-t', '--team'],
-              dict(action='store', help='Github team that users belong to') ),
-            ( ['--output'],
-              dict(action='store', help="Output format, 'tab' (default) or 'json'") ),
-            ( ['-s', '--sudo'],
-              dict(action='store_true', help='Add user to sudo (default: false)') )
+            (['-o', '--org'],
+                dict(action='store', help='Github organisation name')),
+            (['-t', '--team'],
+                dict(action='store', help='Github team that users belong to')),
+            (['--output'],
+                dict(action='store', help="Output format, 'tab' (default) or 'json'")),
+            (['-s', '--sudo'],
+                dict(action='store_true', help='Add user to sudo (default: false)'))
             ]
 
     @expose(hide=True)
@@ -36,7 +38,7 @@ class GitHubBaseController(CementBaseController):
         org, team = self.app.pargs.org, self.app.pargs.team
         github = GithubUsers(org, team)
         data = github.list_users(org, team)
-        headers = [ 'Login', 'On local host', 'Public key' ]
+        headers = ['Login', 'On local host', 'Public key']
         self.app.render(data, headers=headers)
 
     @expose(help="add users from a team")
@@ -46,7 +48,8 @@ class GitHubBaseController(CementBaseController):
     @expose(help="purge users from a team")
     def purge_users(self):
         self.app.log.info("Inside purge_users")
-    
+
+
 class GitHubUserCli(CementApp):
     class Meta:
         label = 'github_user_manager'
