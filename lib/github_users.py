@@ -1,7 +1,6 @@
-import os
+from lib.user_management import UserManagement as local_users
 from github import Github
-from lib.user_management import UserManagement
-
+from config import Config as Configuration
 class GithubUsers():
 	def __init__(self, org, team):
 		self.org = org
@@ -10,7 +9,7 @@ class GithubUsers():
 	@staticmethod
 	def _g():
 		try:
-			return Github(os.environ['GITHUB_AUTH_KEY'])
+			return Github(Configuration.github_auth_key())
 		except KeyError:
 			print("You must have your GITHUB_AUTH_KEY in your environment")
 

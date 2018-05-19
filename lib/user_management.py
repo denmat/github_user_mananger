@@ -1,8 +1,12 @@
 import subprocess
 import pwd
 import grp
+from config import Config as Configuration
 
 class UserManagement():
+    @classmethod
+    def starting_user_id(cls):
+        return Configuration.starting_uid_number()
 
     @classmethod
     def user_exist(cls, login):
