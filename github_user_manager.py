@@ -33,8 +33,9 @@ class GitHubBaseController(CementBaseController):
     @expose(help="lists users for a github team, tests to see if they have local accounts, and displays their public keys")
     def list_users(self):
         self.app.log.info("Listing github users")
-        github = GithubUsers(self.app.pargs.org, self.app.pargs.team)
-        data = github.list_users(self.app.pargs.org, self.app.pargs.team)
+        org, team = self.app.pargs.org, self.app.pargs.team
+        github = GithubUsers(org, team)
+        data = github.list_users(org, team)
         headers = [ 'Login', 'On local host', 'Public key' ]
         self.app.render(data, headers=headers)
 

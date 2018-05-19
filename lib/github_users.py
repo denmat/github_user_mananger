@@ -47,7 +47,7 @@ class GithubUsers():
 
 	@staticmethod
 	def local_user_exist(login):
-		UserManagement.user_exist(login)
+		local_users.user_exist(login)
 
 	def list_users(self, org, team):
 		data = []
