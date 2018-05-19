@@ -27,19 +27,19 @@ class UserManagement():
     def add_user(self, login, github_team, uid):
         try:
             subprocess.run([ 'useradd','-u', uid, '-m', '-G', github_team, login], check=True)
-        except CalledProcessError:
+        except subprocess.CalledProcessError:
             raise("Failed to add %s add system" % login)
 
     def add_group(self, github_team):
         try:
             subprocess.run([ 'groupadd', github_team], check=True)
-        except CalledProcessError:
+        except subprocess.CalledProcessError:
             raise("Failed to add %s to system" % github_team)
 
     def purge_user(self, login):
         try:
             subprocess.run([ 'userdel', '-r', login], check=True)
-        except CalledProcessError:
+        except subprocess.CalledProcessError:
             raise("Failed to remove %s from system" % login)
 
     def get_ids(self, uid):
