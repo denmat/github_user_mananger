@@ -12,4 +12,9 @@ class Config():
 
     @classmethod
     def github_auth_key(cls):
-        return os.environ['GITHUB_AUTH_KEY']
+        try:
+            key = os.environ['GITHUB_AUTH_KEY']
+        except KeyError:
+            print("You must have your GITHUB_AUTH_KEY in your environment")
+        return key
+

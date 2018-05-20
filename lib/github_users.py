@@ -11,10 +11,7 @@ class GithubUsers():
 
     @staticmethod
     def _g():
-        try:
-            return Github(Configuration.github_auth_key())
-        except KeyError:
-            print("You must have your GITHUB_AUTH_KEY in your environment")
+    	return Github(Configuration.github_auth_key())
 
     @staticmethod
     def _validate_org(g, org_name):
