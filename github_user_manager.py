@@ -40,6 +40,17 @@ class GitHubBaseController(CementBaseController):
         headers = ['Login', 'On local host', 'Public key']
         self.app.render(data, headers=headers)
 
+    @expose(help="lists users for a local users")
+    def list_local_users(self):
+        self.app.log.info("Listing local users")
+        gh = GithubUserManager()
+        data = gh.list_local_users()
+        if 'nobody' in data:
+            print('No local users with uids over or eqaul to: %s' % Configuration.starting_uid_number())
+        else:
+            headers = ['Login']
+            self.app.render(data, headers=headers)
+
     @expose(help="add users from a team")
     def add_users(self):
         self.app.log.info("Inside add_users")

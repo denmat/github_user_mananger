@@ -52,4 +52,4 @@ class UserManagement():
 
     def list_local_logins(self):
         for id in self.get_ids(self.starting_user_id()):
-            return id.pw_name
+            yield id.pw_name
