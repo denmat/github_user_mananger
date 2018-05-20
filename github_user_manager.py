@@ -1,6 +1,6 @@
 from cement.core.foundation import CementApp
 from cement.core.controller import CementBaseController, expose
-from lib.github_user_manager import GithubUserMananger
+from lib.github_user_manager import GithubUserManager
 from config import Config as Configuration
 
 
@@ -36,7 +36,7 @@ class GitHubBaseController(CementBaseController):
     def list_users(self):
         self.app.log.info("Listing github users")
         org, team = self.app.pargs.org, self.app.pargs.team
-        data = GithubUserMananger.list_users(org, team)
+        data = GithubUserManager.list_github_users(org, team)
         headers = ['Login', 'On local host', 'Public key']
         self.app.render(data, headers=headers)
 

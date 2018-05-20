@@ -1,7 +1,7 @@
 from config import Config as Configuration
 from lib.github_users import GithubUsers as github_users
 
-class GithubUserMananger():
+class GithubUserManager():
 
     @classmethod
     def list_users(cls, org, team):
