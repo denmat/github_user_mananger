@@ -33,7 +33,7 @@ class GitHubBaseController(CementBaseController):
         app.args.print_help()
 
     @expose(help="lists users for a github team, tests to see if they have local accounts, and displays their public keys")
-    def list_users(self):
+    def list_github_users(self):
         self.app.log.info("Listing github users")
         org, team = self.app.pargs.org, self.app.pargs.team
         data = GithubUserManager.list_github_users(org, team)

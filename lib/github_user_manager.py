@@ -4,7 +4,7 @@ from lib.github_users import GithubUsers as github_users
 class GithubUserManager():
 
     @classmethod
-    def list_users(cls, org, team):
+    def list_github_users(cls, org, team):
         gh = github_users(org, team)
         data = gh.list_users(org, team)
         return data
