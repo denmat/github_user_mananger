@@ -14,6 +14,7 @@ class UserManagement():
     def user_exist(cls, login):
         try:
             pwd.getpwnam(login)
+            print('User %s on local system' % login)
             return True
         except KeyError:
             return False
