@@ -54,6 +54,10 @@ class GitHubBaseController(CementBaseController):
     @expose(help="add users from a team")
     def add_users(self):
         self.app.log.info("Inside add_users")
+        org, team = self.app.pargs.org, self.app.pargs.team
+        github_users = GithubUserManager.list_github_users(org, team)
+        gh = GithubUserManager()
+        gh.add_users(github_users, team)
 
     @expose(help="purge users from a team")
     def purge_users(self):

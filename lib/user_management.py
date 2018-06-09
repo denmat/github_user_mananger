@@ -1,6 +1,7 @@
 import subprocess
 import pwd
 import grp
+import os
 from config import Config as Configuration
 
 
@@ -17,7 +18,6 @@ class UserManagement():
         except KeyError:
             return False
 
-    @classmethod
     def group_exist(self, github_team):
         try:
             grp.getgrnam(github_team)
@@ -25,9 +25,13 @@ class UserManagement():
         except KeyError:
             return False
 
-    def add_user(self, login, github_team, uid):
+    def add_user(self, login, github_team):
+        if not self.group_exist(github_team):
+            self.add_group(github_team)
+
         try:
-            subprocess.run(['useradd', '-u', uid, '-m', '-G', github_team, login], check=True)
+            print('adding %s' % login)
+            subprocess.run(['useradd', '-m', '-G', github_team, login], check=True)
         except subprocess.CalledProcessError:
             raise("Failed to add %s add system" % login)
 
@@ -42,6 +46,11 @@ class UserManagement():
             subprocess.run(['userdel', '-r', login], check=True)
         except subprocess.CalledProcessError:
             raise("Failed to remove %s from system" % login)
+
+    def add_ssh_pub_key(self, user, public_key):
+        os.mkdir('/home/' + user + '/.ssh', mode=0o700)
+        with open('/home/' + user + '/.ssh/authorized_keys') as f:
+            f.w(public_key)
 
     def get_ids(self, uid):
         return (id for id in pwd.getpwall() if (id.pw_uid >= uid))
