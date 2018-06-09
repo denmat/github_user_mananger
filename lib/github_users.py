@@ -1,4 +1,4 @@
-from lib.user_management import UserManagement as local_users
+from lib.user_management import UserManagement
 from github import Github
 from config import Config as Configuration
 
@@ -11,7 +11,7 @@ class GithubUsers():
 
     @staticmethod
     def _g():
-    	return Github(Configuration.github_auth_key())
+        return Github(Configuration.github_auth_key())
 
     @staticmethod
     def _validate_org(g, org_name):
@@ -45,17 +45,13 @@ class GithubUsers():
         start, end = key[:16], key[-8:]
         return start + '....' + end
 
-    @staticmethod
-    def local_user_exist(login):
-        local_users.user_exist(login)
-
     def list_users(self, org, team):
         data = []
         team_id = self._get_team_id(self._g(), org, team)
         members = self._team_members(self._g(), org, team_id)
         for member in self._members_logins(members):
             key = self._get_public_keys(self._g(), member)
-            if self.local_user_exist(member):
+            if UserManagement.user_exist(member):
                 present = 'Present'
             else:
                 present = 'Not Present'
