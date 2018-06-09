@@ -17,15 +17,16 @@ class GithubUserManager():
             loc_usr.append(usr)
         return loc_usr
 
-    def list_gh_users_not_on_local(self, list_gh_users, list_local_users):
-        return (gh_u for gh_u in list_gh_users if list_gh_users not in list_local_users)
+    def list_gh_users_not_on_local(self, list_gh_users):
+        return (gh_u for gh_u in list_gh_users if gh_u[1] == 'Not Present')
 
     def list_local_users_not_on_gh(self, list_gh_users, list_local_users):
         return (loc_u for loc_u in list_local_users if list_local_users not in list_gh_users)
 
-    def add_users(self, list_gh_users, list_local_users):
-        users_to_purge = []
-        print('here')
+    def add_users(self, list_gh_users, team):
+        loc = local_users()
+        for usr in self.list_gh_users_not_on_local(list_gh_users):
+            loc.add_user(usr[0], team)
 
     def purge_users(self):
         print('here')
