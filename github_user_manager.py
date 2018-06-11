@@ -18,11 +18,11 @@ class GitHubBaseController(CementBaseController):
         description = "Fetches Github user from an Github org team, and creates user accounts and public ssh keys"
         arguments = [
             (['-o', '--org'],
-                dict(action='store', help='Github organisation name')),
+                dict(action='store', dest='org', help='Github organisation name')),
             (['-t', '--team'],
-                dict(action='store', help='Github team that users belong to')),
+                dict(action='store', dest='team', help='Github team that users belong to')),
             (['--output'],
-                dict(action='store', help="Output format, 'tab' (default) or 'json'")),
+                dict(action='store', dest='output', help="Output format, 'tab' (default) or 'json'")),
             (['-s', '--sudo'],
                 dict(action='store_true', help='Add user to sudo (default: false)'))
             ]
@@ -34,11 +34,17 @@ class GitHubBaseController(CementBaseController):
 
     @expose(help="lists users for a github team, tests to see if they have local accounts, and displays their public keys")
     def list_github_users(self):
-        self.app.log.info("Listing github users")
-        org, team = self.app.pargs.org, self.app.pargs.team
-        data = GithubUserManager.list_github_users(org, team)
-        headers = ['Login', 'On local host', 'Public key']
-        self.app.render(data, headers=headers)
+        org, team, output = self.app.pargs.org, self.app.pargs.team, self.app.pargs.output
+        if output == None:
+            output = 'tab'
+        gh = GithubUserManager(org, team, output)
+        data = gh.list_github_users()
+        if output == 'json':
+            print(data)
+        else:
+            self.app.log.info("Listing github users")
+            headers = ['Login', 'On local host', 'Public key']
+            self.app.render(data, headers=headers)
 
     @expose(help="lists users for a local users")
     def list_local_users(self):
@@ -55,8 +61,8 @@ class GitHubBaseController(CementBaseController):
     def add_users(self):
         self.app.log.info("Inside add_users")
         org, team = self.app.pargs.org, self.app.pargs.team
-        github_users = GithubUserManager.list_github_users(org, team)
-        gh = GithubUserManager()
+        gh = GithubUserManager(org, team)
+        github_users = gh.list_github_users()
         gh.add_users(github_users, team)
 
     @expose(help="purge users from a team")
