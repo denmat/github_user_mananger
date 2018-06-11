@@ -1,14 +1,24 @@
+import json
 from config import Config as Configuration
 from lib.github_users import GithubUsers as github_users
 from lib.user_management import UserManagement as local_users
 
 class GithubUserManager():
 
-    @classmethod
-    def list_github_users(cls, org, team):
-        gh = github_users(org, team)
-        data = gh.list_users(org, team)
-        return data
+    def __init__(self, org, team, output=False):
+        self.org = org
+        self.team = team
+        self.output = output
+
+    def list_github_users(self):
+        gh = github_users(self.org, self.team)
+        data = gh.list_users()
+        if self.output == 'json':
+            return self._jsonify(data)
+        elif self.output == 'tab':
+            return self._prettify_for_tab(data)
+        else:
+            return data
 
     def list_local_users(self):
         loc_usr = []
@@ -26,8 +36,21 @@ class GithubUserManager():
     def add_users(self, list_gh_users, team):
         loc = local_users()
         for usr in self.list_gh_users_not_on_local(list_gh_users):
-            loc.add_user(usr[0], team)
+            loc.add_user(usr[0], team, usr[2])
 
     def purge_users(self):
         print('here')
 
+    def _shorten_key(self, key):
+        if not key:
+            return 'None'
+        start, end = key[:16], key[-8:]
+        return start + '....' + end
+
+    def _prettify_for_tab(self, data):
+        for idx, i in enumerate(data):
+            data[idx][2] = self._shorten_key(i[2])
+        return data
+
+    def _jsonify(self, data):
+        return json.dumps(data)
