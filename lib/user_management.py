@@ -51,6 +51,8 @@ class UserManagement():
             raise("Failed to remove %s from system" % login)
 
     def add_ssh_pub_key(self, user, public_key):
+        if not public_key:
+            return "No public key provided"
         _dir = '/home/' + user + '/.ssh'
         _file = 'authorized_keys'
         _auth_file = _dir + '/' + _file
