@@ -8,7 +8,7 @@ class Config():
 
     @classmethod
     def starting_uid_number(cls):
-        return 3333
+        return 1000
 
     @classmethod
     def github_auth_key(cls):
