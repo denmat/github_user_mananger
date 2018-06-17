@@ -30,8 +30,9 @@ class GithubUserManager():
     def list_gh_users_not_on_local(self, list_gh_users):
         return (gh_u for gh_u in list_gh_users if gh_u[1] == 'Not Present')
 
-    def list_local_users_not_on_gh(self, list_gh_users, list_local_users):
-        return (loc_u for loc_u in list_local_users if list_local_users not in list_gh_users)
+    def list_local_users_not_on_gh(self, list_gh_users):
+        loc = local_users()
+        return (loc_u for loc_u in loc if loc not in list_gh_users)
 
     def add_users(self, list_gh_users, team):
         loc = local_users()
@@ -39,7 +40,11 @@ class GithubUserManager():
             loc.add_user(usr[0], team, usr[2])
 
     def purge_users(self):
-        print('here')
+        _github_users = set(ghu[0] for ghu in list_gh_users)
+        _local_users = set(item for sublist in list_local_users() for item in sublist)
+        for user in _local_users.difference(_github_users):
+            print('Removing user: %s' % user)
+            loc.purge_user(user)
 
     def _shorten_key(self, key):
         if not key:
