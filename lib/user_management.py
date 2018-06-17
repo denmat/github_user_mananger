@@ -74,8 +74,10 @@ class UserManagement():
 
     def list_local_uids(self):
         for id in self.get_ids(self.starting_user_id()):
-            return id.pw_uid
+            if id.pw_uid != 65534:
+                return id.pw_uid
 
     def list_local_logins(self):
         for id in self.get_ids(self.starting_user_id()):
-            yield id.pw_name
+            if id.pw_uid != 65534:
+                yield id.pw_name
