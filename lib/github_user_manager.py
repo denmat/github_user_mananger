@@ -24,7 +24,7 @@ class GithubUserManager():
         loc_usr = []
         loc = local_users()
         for usr in loc.list_local_logins():
-            loc_usr.append(usr)
+            loc_usr.append([usr])
         return loc_usr
 
     def list_gh_users_not_on_local(self, list_gh_users):
