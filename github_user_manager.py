@@ -74,9 +74,10 @@ class GitHubApiBaseController(CementBaseController):
     @expose(help="purge users from a team")
     def purge_users(self):
         self.app.log.info("Inside purge_users")
+        org, team = self.app.pargs.org, self.app.pargs.team
         gh = GithubUserManager(org, team)
         github_users = gh.list_github_users()
-        gh.purge_users(github_users, team)
+        gh.purge_users(github_users)
 
 class GitHubUserCli(CementApp):
     class Meta:
