@@ -39,9 +39,10 @@ class GithubUserManager():
         for usr in self.list_gh_users_not_on_local(list_gh_users):
             loc.add_user(usr[0], team, usr[2])
 
-    def purge_users(self):
+    def purge_users(self, list_gh_users):
+        loc = local_users()
         _github_users = set(ghu[0] for ghu in list_gh_users)
-        _local_users = set(item for sublist in list_local_users() for item in sublist)
+        _local_users = set(item for sublist in self.list_local_users() for item in sublist)
         for user in _local_users.difference(_github_users):
             print('Removing user: %s' % user)
             loc.purge_user(user)
