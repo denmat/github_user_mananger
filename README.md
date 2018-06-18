@@ -6,13 +6,14 @@ It will return the login name, if the user currently has a local account and the
 
 The aim of this tool is that it can be used to manage users on hosts according to your team lists in Github.
 
+While we could make this tool do more, like manage sudo and set base UID, it is probably best to let other configuration management
+tools handle those. 
+
 ## Current state of play
 
   * it can list current people in an team, return their public keys and if they have a local account.
-
-## Future
-
   * it can add and remove users from local accounts according to any Github movement out of a team.
+
 
 ## Example:
 
@@ -20,7 +21,7 @@ This requires a valid Github personal token with read access to an org, and read
 be in exported as an environment variable: `export GITHUB_AUTH_KEY=<key>`
 
 ```
-$ python github_users.py list-users --org sinfield --team cafe
+$ python ./github_user_manager.py list-github-users --org sinfield --team cafe
 INFO: Listing github users
 
 | Login         | On local host   | Public key                   |
@@ -32,13 +33,8 @@ INFO: Listing github users
 ```
 
 ```
-python github_users.py
-
-github_users.py 0.0.1
-
-This manages Github users on local Linux systems - using an organisation's team lists
-
-usage: github_user (sub-commands ...) [options ...] {arguments ...}
+./github_user_manager.py --help
+usage: github_user_manager (sub-commands ...) [options ...] {arguments ...}
 
 Fetches Github user from an Github org team, and creates user accounts and public ssh keys
 
@@ -47,8 +43,11 @@ commands:
   add-users
     add users from a team
 
-  list-users
+  list-github-users
     lists users for a github team, tests to see if they have local accounts, and displays their public keys
+
+  list-local-users
+    lists users for a local users
 
   purge-users
     purge users from a team
@@ -59,5 +58,6 @@ optional arguments:
   --quiet               suppress all output
   -o ORG, --org ORG     Github organisation name
   -t TEAM, --team TEAM  Github team that users belong to
-  -s, --sudo            Add user to sudo (default: false)
-```
+  --output OUTPUT       Output format, 'tab' (default) or 'json'
+  ```
+
