@@ -5,7 +5,7 @@ import boto3
 class Config():
     @classmethod
     def version(cls):
-        return '0.0.1'
+        return '0.0.2'
 
     @classmethod
     def starting_uid_number(cls):
