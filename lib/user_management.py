@@ -60,7 +60,8 @@ class UserManagement():
 
         os.mkdir(_dir, mode=0o700)
         with open(_auth_file, 'w') as f:
-            f.write(public_key + "\n")
+            for _key in public_key:
+                f.write(_key + "\n")
         os.chown(_auth_file, self.get_uid(user), self.get_gid(user))
         os.chown(_dir, self.get_uid(user), self.get_gid(user))
 
