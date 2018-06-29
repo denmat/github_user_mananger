@@ -29,8 +29,10 @@ class GithubUsers():
             yield members.login
 
     def _get_public_keys(self, g, login):
+        keys = []
         for key in g.get_user(login).get_keys():
-            return key.key
+            keys.append(key.key)
+        return keys
 
     def _list_users(self, org, team):
         data = []

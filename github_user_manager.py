@@ -44,9 +44,7 @@ class GitHubApiBaseController(CementBaseController):
             (['-t', '--team'],
                 dict(action='store', dest='team', help='Github team that users belong to')),
             (['--output'],
-                dict(action='store', dest='output', help="Output format, 'tab' (default) or 'json'")),
-            (['-s', '--sudo'],
-                dict(action='store_true', help='Add user to sudo (default: false)'))
+                dict(action='store', dest='output', help="Output format, 'tab' (default) or 'json'"))
             ]
 
     @expose(help="lists users for a github team, tests to see if they have local accounts, and displays their public keys")

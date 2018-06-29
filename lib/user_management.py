@@ -28,12 +28,13 @@ class UserManagement():
             return False
 
     def add_user(self, login, github_team, key):
-        if not self.group_exist(github_team):
-            self.add_group(github_team)
+        _github_team = github_team.lower().replace(' ', '_')
+        if not self.group_exist(_github_team):
+            self.add_group(_github_team)
 
         try:
             print('adding %s' % login)
-            subprocess.run(['useradd', '-m', '-G', github_team, login], check=True)
+            subprocess.run(['useradd', '-m', '-G', _github_team, login], check=True)
             self.add_ssh_pub_key(login, key)
         except subprocess.CalledProcessError:
             raise("Failed to add %s add system" % login)
@@ -59,7 +60,8 @@ class UserManagement():
 
         os.mkdir(_dir, mode=0o700)
         with open(_auth_file, 'w') as f:
-            f.write(public_key + "\n")
+            for _key in public_key:
+                f.write(_key + "\n")
         os.chown(_auth_file, self.get_uid(user), self.get_gid(user))
         os.chown(_dir, self.get_uid(user), self.get_gid(user))
 

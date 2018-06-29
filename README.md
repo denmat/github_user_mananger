@@ -20,7 +20,13 @@ tools handle those.
 This requires a valid Github personal token with read access to an org, and read access to public key. The token should
 be in exported as an environment variable: `export GITHUB_AUTH_KEY=<key>`
 
+If you wish to use AWS Secrets Manager to store your GitHub token, you should export the `GITHUB_AUTH_KEY` like so:
+
+```bash
+export GITHUB_AUTH_KEY=secretsmanager:<KeyName>:<region>
 ```
+
+```text
 $ python ./github_user_manager.py list-github-users --org sinfield --team cafe
 INFO: Listing github users
 
@@ -32,7 +38,7 @@ INFO: Listing github users
 | george        | Not Present     | ssh-rsa AAAAB3Nz....f1VrXQ== |
 ```
 
-```
+```text
 ./github_user_manager.py --help
 usage: github_user_manager (sub-commands ...) [options ...] {arguments ...}
 
