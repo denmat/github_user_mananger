@@ -66,4 +66,3 @@ optional arguments:
   -t TEAM, --team TEAM  Github team that users belong to
   --output OUTPUT       Output format, 'tab' (default) or 'json'
   ```
-
