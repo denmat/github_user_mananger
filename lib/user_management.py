@@ -4,6 +4,11 @@ import grp
 import os
 from config import Config as Configuration
 
+class UserDeleteFailed(Exception):
+    pass
+
+class UserAddFailed(Exception):
+    pass
 
 class UserManagement():
     @classmethod
@@ -15,7 +20,7 @@ class UserManagement():
         try:
             pwd.getpwnam(login)
             if output:
-                print('User %s on local system' % login)
+                print('User {} on local system'.format(login))
             return True
         except KeyError:
             return False
@@ -33,23 +38,27 @@ class UserManagement():
             self.add_group(_github_team)
 
         try:
-            print('adding %s' % login)
+            print('adding {}'.format(login))
             subprocess.run(['useradd', '-m', '-G', _github_team, login], check=True)
             self.add_ssh_pub_key(login, key)
         except subprocess.CalledProcessError:
-            raise("Failed to add %s add system" % login)
+            raise UserAddFailed("Failed to add {} add system".format(login))
 
     def add_group(self, github_team):
         try:
             subprocess.run(['groupadd', github_team], check=True)
         except subprocess.CalledProcessError:
-            raise("Failed to add %s to system" % github_team)
+            raise GroupAddFailed("Failed to add {} to system".format(github_team))
 
     def purge_user(self, login):
         try:
-            subprocess.run(['userdel', '-r', login], check=True)
+            run = subprocess.run(['userdel', '-r', login], stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+            if run.returncode == 12:
+                print("Can't remove {}, does not own home directory".format(login))
+            if run.returncode == 6:
+                print("User {} already deleted".format(login))
         except subprocess.CalledProcessError:
-            raise("Failed to remove %s from system" % login)
+            raise UserDeleteFailed("Failed to remove {} from system".format(login))
 
     def add_ssh_pub_key(self, user, public_key):
         if not public_key:

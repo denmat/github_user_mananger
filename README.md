@@ -7,15 +7,14 @@ It will return the login name, if the user currently has a local account and the
 The aim of this tool is that it can be used to manage users on hosts according to your team lists in Github.
 
 While we could make this tool do more, like manage sudo and set base UID, it is probably best to let other configuration management
-tools handle those. 
+tools handle those.
 
 ## Current state of play
 
-  * it can list current people in an team, return their public keys and if they have a local account.
-  * it can add and remove users from local accounts according to any Github movement out of a team.
+* it can list current people in an team, return their public keys and if they have a local account.
+* it can add and remove users from local accounts according to any Github movement out of a team.
 
-
-## Example:
+## Example
 
 This requires a valid Github personal token with read access to an org, and read access to public key. The token should
 be in exported as an environment variable: `export GITHUB_AUTH_KEY=<key>`
