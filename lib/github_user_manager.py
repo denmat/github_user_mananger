@@ -48,10 +48,16 @@ class GithubUserManager():
             loc.purge_user(user)
 
     def _shorten_key(self, key):
+        _key = None
         if not key:
             return 'None'
-        start, end = key[:16], key[-8:]
-        return start + '....' + end
+        if len(key) > 1:
+            _key = "multiple SSH keys detected"
+        else:
+            _k = key.pop()
+            start, end = _k[:16], _k[-8:]
+            _key = start + '....' + end
+        return _key
 
     def _prettify_for_tab(self, data):
         for idx, i in enumerate(data):
