@@ -1,4 +1,4 @@
 cement==2.10.12
-PyGithub==1.39
+PyGithub==1.47
 tabulate==0.8.2
 boto3==1.9.71

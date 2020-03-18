@@ -4,13 +4,12 @@ from config import Config as Configuration
 
 
 class GithubUsers():
-
     def __init__(self, org, team):
         self.org = org
         self.team = team
 
     def _g(self):
-        return Github(Configuration.github_auth_key())
+        return Github(Configuration.github_auth_key(), timeout=60, retry=2)
 
     def _validate_org(g, org_name):
         name = g.get_organization(org_name).name
